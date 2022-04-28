@@ -3,8 +3,8 @@
 A small tracker and visualiser for the personal sleep data. All data stored locally with JSON backup/restore support.
 Built with React, Typescript, Nivo.
 
-![Heat Calendar](public/image-1.png?raw=true "Heat Calendar")
-![Calendar Input and Backup](public/image-2.png?raw=true "Calendar Input and Backup")
+![Heat Calendar](public/screenshots/image-1.png?raw=true "Heat Calendar")
+![Calendar Input and Backup](public/screenshots/image-2.png?raw=true "Calendar Input and Backup")
 
 # Getting Started with Create React App
 
