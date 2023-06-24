@@ -7,6 +7,7 @@ import EditableTime from '../../Components/EditableTime';
 import { useParams } from 'react-router-dom';
 
 const BedtimeEditor = () => {
+    // Hmm, shouldn't the date be passed in as a prop here?
 
     const { date } = useParams();
     const dateObj = dayjs(date);
@@ -30,7 +31,7 @@ const BedtimeEditor = () => {
     }
 
     return (
-        <Box display='flex' flexDirection='row' alignItems='center' my={4} mx={2}>
+        <Box display='flex' flexDirection='row' alignItems='center' my={2} mx={2}>
             <EditableTime value={dayjs(bedtimeForDay)} onChange={onBedtimeForDayChange} />
             <IconButton aria-label='delete' disabled={!bedtimeForDay} color='error' onClick={() => setBedtimeForDay(null)}>
                 <Icon path={mdiDelete} title='Delete' size={0.8} />

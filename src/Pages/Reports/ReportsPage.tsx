@@ -4,14 +4,14 @@ import { Box, MenuItem, Select, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
+const reports = [
+    { path: 'heat', icon: mdiCalendarMonth },
+    { path: 'diff', icon: mdiListStatus },
+];
+
 const ReportsPage = () => {
 
     const [selectedReport, setSelectedReport] = useState<string>('diff');
-
-    const reports = [
-        { path: 'heat', icon: mdiCalendarMonth },
-        { path: 'diff', icon: mdiListStatus },
-    ];
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -21,7 +21,7 @@ const ReportsPage = () => {
         const initialReport = reports.map(r => r.path).includes(lastSubpath) ? lastSubpath : reports[0].path;
         setSelectedReport(initialReport);
         navigate(`/reports/${initialReport}`);
-    }, []);
+    }, [location.pathname, navigate]);
 
     const onChange = (event: any) => {
         setSelectedReport(event.target.value);

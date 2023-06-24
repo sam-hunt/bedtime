@@ -1,8 +1,8 @@
-import dayjs from 'dayjs';
-import { TextField, useTheme } from '@mui/material';
-import { LocalizationProvider, StaticDatePicker } from '@mui/lab';
-import PickersDay, { PickersDayProps, pickersDayClasses } from '@mui/lab/PickersDay';
-import AdapterDayjs from '@mui/lab/AdapterDayjs';
+import dayjs, { Dayjs } from 'dayjs';
+import { useTheme } from '@mui/material';
+import { LocalizationProvider, DateCalendar } from '@mui/x-date-pickers';
+import { PickersDay, PickersDayProps, pickersDayClasses } from '@mui/x-date-pickers/PickersDay';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import useBedtimes from '../../hooks/use-bedtimes';
 import { useMemo } from 'react';
 
@@ -13,7 +13,7 @@ export interface IDateSelectorWithBedtimesProps {
 
 const DateSelectorWithBedtimes = ({ value, onChange }: IDateSelectorWithBedtimesProps) => {
     const { bedtimes } = useBedtimes();
-    const highlightedDays = useMemo(() => Object.keys(bedtimes), [bedtimes])
+    const highlightedDays = useMemo(() => new Set(Object.keys(bedtimes)), [bedtimes])
 
     const theme = useTheme();
 
@@ -25,31 +25,31 @@ const DateSelectorWithBedtimes = ({ value, onChange }: IDateSelectorWithBedtimes
         },
     }
 
+    function CustomDay(props: PickersDayProps<Dayjs>) {
+        const { day, outsideCurrentMonth, ...other } = props;
+
+        const matchedStyles = highlightedDays.has(day.format('YYYY-MM-DD')) ? highlightedDayStyles : {};
+        return (
+            <PickersDay
+                {...other}
+                day={day}
+                outsideCurrentMonth={outsideCurrentMonth}
+                sx={{
+                    ...matchedStyles,
+                    [`&&.${pickersDayClasses.selected}`]: {
+                        backgroundColor: theme.palette.secondary.main,
+                    }
+                }}
+            />
+        );
+    }
+
     return <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <StaticDatePicker
-            openTo='day'
+        <DateCalendar
+            openTo="day"
             value={value}
             onChange={onChange}
-            inputFormat='YYYY-MM-DD'
-            renderInput={(params) => <TextField {...params} />}
-            renderDay={(
-                date: dayjs.Dayjs,
-                selectedDates: Array<dayjs.Dayjs | null>,
-                pickersDayProps: PickersDayProps<dayjs.Dayjs>
-            ) => {
-                const matchedStyles = highlightedDays.reduce((acc, val) => date.isSame(val, 'day') ? highlightedDayStyles : acc, {});
-                return (
-                    <PickersDay
-                        {...pickersDayProps}
-                        sx={{
-                            ...matchedStyles,
-                            [`&&.${pickersDayClasses.selected}`]: {
-                                backgroundColor: theme.palette.secondary.main,
-                            }
-                        }}
-                    />
-                );
-            }}
+            slots={{ day: CustomDay }}
         />
     </LocalizationProvider>
 }

@@ -1,5 +1,5 @@
 import dayjs, { Dayjs } from 'dayjs'
-import { Button, Divider, Typography } from '@mui/material';
+import { Box, Button, Divider, Typography } from '@mui/material';
 import Icon from '@mdi/react'
 import { mdiArrowRight, mdiArrowLeft, mdiCalendarToday } from '@mdi/js';
 import DateSelectorWithHours from './DateSelectorWithHours';
@@ -8,10 +8,11 @@ import { Outlet, useNavigate, useParams } from 'react-router-dom';
 
 const CalendarPage = () => {
     const today = () => dayjs().hour(0).minute(0).second(0).millisecond(0);
-    
+
     const { date } = useParams();
     const navigate = useNavigate();
 
+    // TODO: Shouldn't this be in a state variable or something
     const selectedDate = dayjs(date);
     const setSelectedDate = (newDate: Dayjs) => navigate(newDate.format('YYYY-MM-DD'));
 
@@ -55,6 +56,10 @@ const CalendarPage = () => {
             </Button>
             <br /><br />
             <Divider />
+            {/* Probably move this into the BedtimeEditor in the outlet once it's passed as a prop? */}
+            <Box display='flex' flexDirection='row' alignItems='center' mt={4} mx={2}>
+                <Typography variant="h4" color="secondary">{selectedDate.format('dddd, D MMMM YYYY')}</Typography>
+            </Box>
             <Outlet />
         </section >
     );

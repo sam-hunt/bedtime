@@ -1,8 +1,8 @@
 import { mdiCheck, mdiClose, mdiPencil } from '@mdi/js';
 import Icon from '@mdi/react';
-import { LocalizationProvider, TimePicker } from '@mui/lab';
-import AdapterDayjs from '@mui/lab/AdapterDayjs';
-import { Box, IconButton, TextField, Typography, useTheme } from '@mui/material';
+import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { Box, IconButton, Typography, useTheme } from '@mui/material';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 
@@ -45,14 +45,7 @@ const EditableTime = ({ value, onChange }: IEditableTimeProps) => {
                     <TimePicker
                         value={newValue}
                         onChange={(v: dayjs.Dayjs | null) => setNewValue(v)}
-                        renderInput={(params: any) =>
-                            <TextField
-                                {...params}
-                                variant='standard'
-                                style={{ width: '140px' }}
-                                autoFocus
-                            />
-                        }
+                        slotProps={{ textField: { variant: 'standard', style: { width: '140px' }, autoFocus: true } }}
                     />
                     <IconButton aria-label='Save edit' onClick={saveEdit} style={{
                         color: theme.palette.success.main,
